@@ -1,0 +1,43 @@
+{% load socialaccount %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}{% endblock title %}</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+</head>
+<body>
+  <nav class="navbar navbar-default">
+    <div class="container">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="#">News portal</a>
+      </div>
+      <nav class="nav">
+          <a href="{% url 'authors:posts' %}"><i class="bi bi-house-fill"></i>Posts</a>
+          <a href="{% url 'authors:search' %}"><i class="bi bi-list-task"></i>Search</a>
+          <a href="{% url 'authors:news-create' %}"><i class="bi bi-plus-circle"></i>News Create</a>
+          <a href="{% url 'authors:article-create' %}"><i class="bi bi-plus-circle"></i>Article Create</a>
+          {% if user.is_authenticated %}
+<p>Welcome {{ user.username }} !!!</p>
+          <a href="{% url 'account_logout' %}">log out</a>
+          <a href="{% url 'authors:subscribe' %}"><i class="bi bi-plus-circle"></i>Subscribe</a>
+{% else %}
+<a href="{% provider_login_url 'google' %}">Sign Up</a>
+{% endif %}
+      </nav>
+    </div>
+  </nav>
+  <div class="container">
+    {% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-{{message.tags}}">
+               {{message}}
+             </div>
+           {% endfor %}
+    {% endif %}
+    {% block content %}{% endblock content %}
+  </div>
+</body>
+</html>

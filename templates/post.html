@@ -1,0 +1,19 @@
+
+{% extends 'flatpages/default.html' %}
+{% load censor %}
+
+
+{% block title %}
+Post {{post.title|my_censor}} - type {{ post.type }}
+{% endblock title %}
+
+
+{% block content %}
+<h1>{{post.title|my_censor}}</h1><span>{{post.author.user.username}}</span>
+<br> {{ post.text|my_censor }} <br> rating {{post.rating}} <br> {{post.created_at|date:'d M Y'}}<hr>
+<hr>
+<h2>категории:</h2>
+{% for category in post.categories.all %}
+<span>{{category.name}}</span>
+{% endfor %}
+{% endblock content %}

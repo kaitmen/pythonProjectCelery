@@ -1,0 +1,75 @@
+user1=User.objects.create_user('username1')
+user1.save()
+user2=User.objects.create_user('username2')
+user2.save()
+from authors.models import *
+author1=Author.objects.create(user=user1)
+author2=Author.objects.create(user=user2)
+category1 = Category.objects.create(name='auto')
+category2 = Category.objects.create(name='sport')
+category3 = Category.objects.create(name='TV')
+category4 = Category.objects.create(name='music')
+article1 = Post.objects.create(author=author2, type='A', title='Article1', text='text1')
+article1.categories.add(category1, category2)
+article2 = Post.objects.create(author=author2, type='A', title='Article2', text='text2')
+article2.categories.add(category2, category4)
+comment1 = Comment.objects.create(post=article1, user=user1, text='text1')
+comment2 = Comment.objects.create(post=article2, user=user2, text='text1')
+comment3 = Comment.objects.create(post=article1, user=user1, text='text1')
+comment4 = Comment.objects.create(post=article2, user=user2, text='text1')
+
+article3 = Post.objects.create(author=author2, type='N', title='Article3', text='text3')
+article3.categories.add(category1, category2)
+article4 = Post.objects.create(author=author2, type='N', title='Article4', text='text4')
+article4.categories.add(category3, category4)
+
+comment5 = Comment.objects.create(post=article3, user=user1, text='text5')
+comment6 = Comment.objects.create(post=article4, user=user2, text='text6')
+comment7 = Comment.objects.create(post=article3, user=user1, text='text7')
+comment8 = Comment.objects.create(post=article4, user=user2, text='text8')
+
+comment1.like()
+comment1.save()
+
+comment2.like()
+comment2.save()
+
+comment3.like()
+comment3.save()
+
+comment4.like()
+comment4.save()
+
+comment5.dislike()
+comment5.save()
+
+comment6.dislike()
+comment6.save()
+
+comment7.dislike()
+comment7.save()
+
+comment8.dislike()
+comment8.save()
+
+article1.like()
+article1.save()
+
+article2.like()
+article2.save()
+
+article3.dislike()
+article3.save()
+
+article4.dislike()
+article4.save()
+
+
+authors = Author.objects.all()
+author1 = authors[0]
+author1.update_rating()
+
+author_max = Author.objects.order_by('-rating').values('user__username', 'rating').first()
+post_max= Post.objects.order_by('-rating').values('created_at', 'author__user__username', 'rating', 'title').first()
+p =Post.objects.get(id=post_max['pk'])
+all_c =p.post_comments.all()
