@@ -1,7 +1,7 @@
 from django.db import models
 from django.conf import settings
 from django.db.models import Sum
-
+from django.core.cache import cache
 from . import TYPE_CHOICES
 
 
@@ -60,7 +60,9 @@ class Post(models.Model):
     def dislike(self):
         self.rating -= 1
 
-
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)  
+        cache.delete(f'post-{self.pk}')
 
 
 

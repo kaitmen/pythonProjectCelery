@@ -1,4 +1,5 @@
 {% load socialaccount %}
+{% load cache %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,6 +10,7 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 </head>
 <body>
+{% cache 30 header %}
   <nav class="navbar navbar-default">
     <div class="container">
       <div class="navbar-header">
@@ -29,6 +31,7 @@
       </nav>
     </div>
   </nav>
+{% endcache %}
   <div class="container">
     {% if messages %}
     {% for message in messages %}
