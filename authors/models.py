@@ -61,7 +61,7 @@ class Post(models.Model):
         self.rating -= 1
 
     def save(self, *args, **kwargs):
-        super().save(*args, **kwargs)  
+        super().save(*args, **kwargs)
         cache.delete(f'post-{self.pk}')
 
 
